@@ -3,10 +3,12 @@
 namespace Tests\Feature\Models;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Helpers\HelperTesting;
 use Tests\TestCase;
+use PhpParser\Node\Expr\Instanceof_;
 
 class PostTest extends TestCase
 {
@@ -66,14 +68,32 @@ class PostTest extends TestCase
     public function test_delete_post()
     {
         $post = Post::factory()->create();
-        $post->delete();
+        $post->forceDelete();
         $this->assertDatabaseMissing('posts', $post->toArray());
     }
 
-    // public function test_soft_delete_post()
-    // {
-    //     $post = Post::factory()->create();
-    //     $post->delete();
-    //     $this->assertDatabaseMissing('posts', $post->toArray());
-    // }
+    public function test_soft_delete_post()
+    {
+        $post = Post::factory()->create();
+        $post->delete();
+        $this->assertDatabaseHas('posts', $post->toArray());
+        $this->assertNotNull($post->deleted_at);
+    }
+
+    public function test_restore_post()
+    {
+        $post = Post::factory()->create();
+        $post->delete();
+        $post->restore();
+        $this->assertDatabaseHas('posts', $post->toArray());
+        $this->assertNull($post->deleted_at);
+    }
+
+    public function test_post_belongs_to_user()
+    {
+        $post = Post::factory()->create();
+        $user = $post->user;
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertDatabaseHas('users', $user->toArray());
+    }
 }
