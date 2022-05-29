@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\Helpers\HelperTesting;
+use Tests\Helpers\TestHelpers;
 use Tests\TestCase;
-use PhpParser\Node\Expr\Instanceof_;
 
 class PostTest extends TestCase
 {
@@ -19,12 +19,16 @@ class PostTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        HelperTesting::truncateTable('posts');
+        // TestHelpers::truncateTable(['users', 'posts', 'comments']);
+        // for faster tests
+        TestHelpers::truncateTable('posts');
     }
 
     public function tearDown(): void
     {
-        HelperTesting::truncateTable('posts');
+        // TestHelpers::truncateTable(['users', 'posts', 'comments']);
+        // for faster tests
+        TestHelpers::truncateTable('posts');
         parent::tearDown();
     }
 
@@ -91,9 +95,19 @@ class PostTest extends TestCase
 
     public function test_post_belongs_to_user()
     {
-        $post = Post::factory()->create();
+        // $post = Post::factory()->create();
+        $post = Post::factory()->forUser()->create();
         $user = $post->user;
         $this->assertInstanceOf(User::class, $user);
         $this->assertDatabaseHas('users', $user->toArray());
+    }
+
+    public function test_post_has_many_comments()
+    {
+        $post = Post::factory()->hasComments(5)->create();
+        // Comment::factory(5)->create(['post_id' => $post->id]);
+        $comments = $post->comments;
+        $this->assertInstanceOf(Comment::class, $comments->first());
+        $this->assertDatabaseHas('comments', $comments->first()->toArray());
     }
 }

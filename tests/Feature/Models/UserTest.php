@@ -2,12 +2,13 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Schema;
-use Tests\Helpers\HelperTesting;
+use Tests\Helpers\TestHelpers;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -19,12 +20,12 @@ class UserTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        HelperTesting::truncateTable('users');
+        TestHelpers::truncateTable(['users', 'posts', 'comments']);
     }
 
     public function tearDown(): void
     {
-        HelperTesting::truncateTable('users');
+        TestHelpers::truncateTable(['users', 'posts', 'comments']);
         parent::tearDown();
     }
 
@@ -80,10 +81,42 @@ class UserTest extends TestCase
 
     public function test_user_has_many_posts()
     {
+        $user = User::factory()->hasPosts(5)->create();
+        $posts = $user->posts;
+        $this->assertInstanceOf(Post::class, $posts->first());
+        $this->assertDatabaseHas('posts', $posts->first()->toArray());
+    }
+
+    public function test_post_has_many_comments()
+    {
+        $user = User::factory()->hasComments(5)->create();
+        // Comment::factory(5)->create(['user_id' => $user->id]);
+        $comments = $user->comments;
+        $this->assertInstanceOf(Comment::class, $comments->first());
+        $this->assertDatabaseHas('comments', $comments->first()->toArray());
+    }
+
+    // get comments in my (user) post, no my (user) comment
+    // has many through
+    public function test_access_comments_with_post()
+    {
         $user = User::factory()->create();
-        Post::factory(5)->create(['user_id' => $user->id]);
-        $post = $user->posts;
-        $this->assertInstanceOf(Post::class, $post->first());
-        $this->assertDatabaseHas('posts', $post->first()->toArray());
+        $post = Post::factory(['user_id' => $user->id])->create();
+        $comments = Comment::factory(2, [
+            'commentable_id' => $post->id,
+            'deleted_at' => null,
+        ])->create();
+        // set deleted_at for match get comments.
+
+        $postComments = $user->postComments;
+
+        // must use last! because first() created with another test. or delete comment table.
+        $postComment = $postComments->last()->toArray();
+        unset($postComment['laravel_through_key']);
+        $comment = $comments->last()->toArray();
+
+        $this->assertInstanceOf(Comment::class, $postComments->last());
+        $this->assertDatabaseHas('comments', $postComment);
+        $this->assertEquals($comment, $postComment);
     }
 }
