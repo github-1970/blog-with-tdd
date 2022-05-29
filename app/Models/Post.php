@@ -26,4 +26,10 @@ class Post extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function tags()
+    {
+        // return $this->morphedByMany(Post::class, 'tagable');
+        return $this->belongsToMany(Tag::class, 'post_tag');
+    }
 }

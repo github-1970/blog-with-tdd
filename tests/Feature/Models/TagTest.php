@@ -3,6 +3,7 @@
 namespace Tests\Feature\Models;
 
 use App\Models\Comment;
+use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,16 +20,16 @@ class TagTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        // TestHelpers::truncateTable(['users', 'tags', 'comments', 'posts']);
+        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags']);
         // for faster tests
-        TestHelpers::truncateTable('tags');
+        TestHelpers::truncateTable(['tags', 'post_tag']);
     }
 
     public function tearDown(): void
     {
-        // TestHelpers::truncateTable(['users', 'tags', 'comments', 'posts']);
+        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags']);
         // for faster tests
-        TestHelpers::truncateTable('tags');
+        TestHelpers::truncateTable(['tags', 'post_tag']);
         parent::tearDown();
     }
 
@@ -93,21 +94,12 @@ class TagTest extends TestCase
         $this->assertNull($tag->deleted_at);
     }
 
-    // public function test_tag_belongs_to_user()
-    // {
-    //     // $tag = Tag::factory()->create();
-    //     $tag = Tag::factory()->forUser()->create();
-    //     $user = $tag->user;
-    //     $this->assertInstanceOf(User::class, $user);
-    //     $this->assertDatabaseHas('users', $user->toArray());
-    // }
-
-    // public function test_tag_has_many_comments()
-    // {
-    //     $tag = Tag::factory()->hasComments(5)->create();
-    //     // Comment::factory(5)->create(['tag_id' => $tag->id]);
-    //     $comments = $tag->comments;
-    //     $this->assertInstanceOf(Comment::class, $comments->first());
-    //     $this->assertDatabaseHas('comments', $comments->first()->toArray());
-    // }
+    public function test_tag_belongs_to_many_posts()
+    {
+        $tag = Tag::factory()->create();
+        $post = $tag->posts->first();
+        $this->assertInstanceOf(Post::class, $post);
+        unset($post['pivot']);
+        $this->assertDatabaseHas('posts', $post->toArray());
+    }
 }

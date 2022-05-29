@@ -20,12 +20,12 @@ class UserTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        TestHelpers::truncateTable(['users', 'posts', 'comments']);
+        TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags']);
     }
 
     public function tearDown(): void
     {
-        TestHelpers::truncateTable(['users', 'posts', 'comments']);
+        TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags']);
         parent::tearDown();
     }
 

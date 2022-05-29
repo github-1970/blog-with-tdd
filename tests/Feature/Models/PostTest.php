@@ -4,6 +4,7 @@ namespace Tests\Feature\Models;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -19,16 +20,16 @@ class PostTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        // TestHelpers::truncateTable(['users', 'posts', 'comments']);
+        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'post_tag']);
         // for faster tests
-        TestHelpers::truncateTable('posts');
+        TestHelpers::truncateTable(['posts', 'post_tag']);
     }
 
     public function tearDown(): void
     {
-        // TestHelpers::truncateTable(['users', 'posts', 'comments']);
+        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'post_tag']);
         // for faster tests
-        TestHelpers::truncateTable('posts');
+        TestHelpers::truncateTable(['posts', 'post_tag']);
         parent::tearDown();
     }
 
@@ -109,5 +110,14 @@ class PostTest extends TestCase
         $comments = $post->comments;
         $this->assertInstanceOf(Comment::class, $comments->first());
         $this->assertDatabaseHas('comments', $comments->first()->toArray());
+    }
+
+    public function test_post_belongs_to_many_tags()
+    {
+        $post = Post::factory()->hasTags(5)->create();
+        $tag = $post->tags->first();
+        $this->assertInstanceOf(Tag::class, $tag);
+        unset($tag['pivot']);
+        $this->assertDatabaseHas('tags', $tag->toArray());
     }
 }
