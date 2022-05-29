@@ -26,7 +26,7 @@ class TagFactory extends Factory
         return $this->afterMaking(function (Tag $tag) {
             //
         })->afterCreating(function (Tag $tag) {
-            $tag->posts()->attach(Post::factory(5)->create());
+            // $tag->posts()->attach(Post::factory(5)->create());
         });
     }
 }

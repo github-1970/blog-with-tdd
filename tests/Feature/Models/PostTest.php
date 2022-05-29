@@ -20,16 +20,16 @@ class PostTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'post_tag']);
+        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables']);
         // for faster tests
-        TestHelpers::truncateTable(['posts', 'post_tag']);
+        TestHelpers::truncateTable(['posts', 'taggables']);
     }
 
     public function tearDown(): void
     {
-        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'post_tag']);
+        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables']);
         // for faster tests
-        TestHelpers::truncateTable(['posts', 'post_tag']);
+        TestHelpers::truncateTable(['posts', 'taggables']);
         parent::tearDown();
     }
 

@@ -14,7 +14,6 @@ class Tag extends Model
 
     public function posts()
     {
-        // return $this->morphedByMany(Post::class, 'tagable');
-        return $this->belongsToMany(Post::class, 'post_tag');
+        return $this->morphedByMany(Post::class, 'taggable');
     }
 }

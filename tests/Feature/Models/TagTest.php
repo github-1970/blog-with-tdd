@@ -20,16 +20,16 @@ class TagTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags']);
+        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables]);
         // for faster tests
-        TestHelpers::truncateTable(['tags', 'post_tag']);
+        TestHelpers::truncateTable(['tags', 'taggables']);
     }
 
     public function tearDown(): void
     {
-        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags']);
+        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables]);
         // for faster tests
-        TestHelpers::truncateTable(['tags', 'post_tag']);
+        TestHelpers::truncateTable(['tags', 'taggables']);
         parent::tearDown();
     }
 
@@ -96,7 +96,9 @@ class TagTest extends TestCase
 
     public function test_tag_belongs_to_many_posts()
     {
-        $tag = Tag::factory()->create();
+        $tag = Tag::factory()->hasAttached(
+            Post::factory(5)->create()
+        )->create();
         $post = $tag->posts->first();
         $this->assertInstanceOf(Post::class, $post);
         unset($post['pivot']);
