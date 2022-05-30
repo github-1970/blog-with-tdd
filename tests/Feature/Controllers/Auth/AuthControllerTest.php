@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Tests\Helpers\TestHelpers;
 use Tests\TestCase;
 
-class AuthTest extends TestCase
+class AuthControllerTest extends TestCase
 {
     public function setUp(): void
     {

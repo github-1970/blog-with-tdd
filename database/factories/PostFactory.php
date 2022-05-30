@@ -18,7 +18,7 @@ class PostFactory extends Factory
         return [
             'user_id' => User::factory()->create(),
             'title' => $this->faker->sentence(Arr::random([2, 3, 4, 5])),
-            'description' => $this->faker->text(Arr::random([85, 100, 150])),
+            'description' => $this->faker->text(Arr::random([100, 120, 150])),
             'body' => $this->faker->text(Arr::random([500, 700, 1500])),
         ];
     }

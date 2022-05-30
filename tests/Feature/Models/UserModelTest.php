@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Schema;
 use Tests\Helpers\TestHelpers;
 use Tests\TestCase;
 
-class UserTest extends TestCase
+class UserModelTest extends TestCase
 {
     // select, insert, update, delete
 

@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Helpers\TestHelpers;
 use Tests\TestCase;
 
-class CommentTest extends TestCase
+class CommentModelTest extends TestCase
 {
     // select, insert, update, delete
 

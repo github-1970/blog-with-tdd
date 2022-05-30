@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Helpers\TestHelpers;
 use Tests\TestCase;
 
-class PostTest extends TestCase
+class PostModelTest extends TestCase
 {
     // select, insert, update, delete
 

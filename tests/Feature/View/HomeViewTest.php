@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\Helpers\TestHelpers;
 use Tests\TestCase;
 
-class HomeTest extends TestCase
+class HomeViewTest extends TestCase
 {
     public function setUp(): void
     {
