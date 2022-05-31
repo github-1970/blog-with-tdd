@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -25,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('post-comment-actions', function (User $user, Comment $comment) {
+            return Auth::check() && $comment->user_id === $user->id;
+        });
     }
 }

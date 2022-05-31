@@ -22,14 +22,14 @@ class HomeViewTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_access_home()
+    public function test_access_home_view()
     {
         $response = $this->get(route('home'));
         $response->assertStatus(200)
         ->assertViewIs('home');
     }
 
-    public function test_admin_panel_link_rendered_if_user_is_admin_()
+    public function test_admin_panel_link_rendered_if_user_is_admin()
     {
         $user = User::factory()->create(['type' => 'admin']);
         $response = $this->actingAs($user)->get(route('home'));

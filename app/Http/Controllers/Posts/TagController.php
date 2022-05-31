@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Posts;
 
+use App\Http\Controllers\Controller;
 use App\Models\Tag;
-use App\Http\Requests\StoreTagRequest;
-use App\Http\Requests\UpdateTagRequest;
+use App\Http\Requests\Posts\StoreTagRequest;
+use App\Http\Requests\Posts\UpdateTagRequest;
 
 class TagController extends Controller
 {
@@ -31,7 +32,7 @@ class TagController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTagRequest  $request
+     * @param  \App\Http\Requests\Posts\StoreTagRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreTagRequest $request)
@@ -64,7 +65,7 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTagRequest  $request
+     * @param  \App\Http\Requests\Posts\UpdateTagRequest  $request
      * @param  \App\Models\Tag  $tag
      * @return \Illuminate\Http\Response
      */

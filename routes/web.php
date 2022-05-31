@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Posts\CommentController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\Posts\PostController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -16,6 +17,7 @@ Route::group([], function(){
     Route::post('login', [AuthController::class, 'login'])->name('login.send');
 });
 
+// posts
 Route::name('posts.')->prefix('posts')->group(function(){
     Route::get('/', [PostController::class, 'index'])->name('index');
     Route::get('{post}', [PostController::class, 'show'])->name('show');
@@ -27,4 +29,24 @@ Route::name('posts.')->prefix('posts')->group(function(){
     Route::put('{post}', [PostController::class, 'update'])->name('update')->middleware('auth');
 
     Route::delete('{post}', [PostController::class, 'destroy'])->name('destroy')->middleware('auth');
+
+    // comments
+    Route::name('comments.')->prefix('comments')->group(function(){
+        Route::post('{post}/store', [CommentController::class, 'store'])->name('store')->middleware('auth');
+
+        Route::get('{post}/{comment}/edit', [CommentController::class, 'edit'])->name('edit');
+        Route::put('{post}/{comment}', [CommentController::class, 'update'])->name('update')->middleware('auth');
+
+        Route::delete('{post}/{comment}', [CommentController::class, 'destroy'])->name('destroy')->middleware('auth');
+    });
+
+    // tags
+    // Route::name('tags.')->prefix('tags')->group(function(){
+    //     Route::post('{post}/store', [CommentController::class, 'store'])->name('store')->middleware('auth');
+
+    //     Route::get('{post}/{comment}/edit', [CommentController::class, 'edit'])->name('edit');
+    //     Route::put('{post}/{comment}', [CommentController::class, 'update'])->name('update')->middleware('auth');
+
+    //     Route::delete('{post}/{comment}', [CommentController::class, 'destroy'])->name('destroy')->middleware('auth');
+    // });
 });
