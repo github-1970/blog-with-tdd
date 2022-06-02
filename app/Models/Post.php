@@ -10,6 +10,8 @@ class Post extends Model
 {
     use HasFactory, SoftDeletes;
 
+    // protected $touches = ['user'];
+
     protected $fillable = [
         'user_id',
         'title',

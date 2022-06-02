@@ -17,16 +17,15 @@ class TagFactory extends Factory
     {
         return [
             'title' => $this->faker->text(20),
-            'slug' => $this->faker->slug(),
         ];
     }
 
-    public function configure()
-    {
-        return $this->afterMaking(function (Tag $tag) {
-            //
-        })->afterCreating(function (Tag $tag) {
-            // $tag->posts()->attach(Post::factory(5)->create());
-        });
-    }
+    // public function configure()
+    // {
+    //     return $this->afterMaking(function (Tag $tag) {
+    //         //
+    //     })->afterCreating(function (Tag $tag) {
+    //         // $tag->posts()->attach(Post::factory(5)->create());
+    //     });
+    // }
 }

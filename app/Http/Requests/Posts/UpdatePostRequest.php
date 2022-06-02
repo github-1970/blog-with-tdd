@@ -27,6 +27,7 @@ class UpdatePostRequest extends FormRequest
             'title' => 'string|max:255|min:2',
             'description' => 'string|max:200|min:50',
             'body' => 'string|max:3000|min:300',
+            'tags' => 'array|nullable',
         ];
     }
 }

@@ -51,15 +51,14 @@ class CommentController extends Controller
         $comment = $post->comments()->where('id', $comment->id)->first();
         if($comment->user_id !== auth()->id()) {
             return Redirect::back()->withErrors([
-                'comment' => __('User not allowed to edit this comment!')
+                'message' => __('this user not allowed perform this operation')
             ], 'comment_error');
         }
 
         $commentData = $request->validated();
         $commentData['user_id'] = auth()->id();
         if(!$comment){
-            return Redirect::back()->withErrors(__('Comment not found in this post!'));
-            // return Redirect::back()->withErrors(__('validation.my_custom.comment-not-found-in-post'));
+            return Redirect::back()->withErrors(__('content not found'));
         }
 
         $comment->update($commentData);
@@ -78,7 +77,7 @@ class CommentController extends Controller
         // if($comment->user_id !== auth()->id()) {
         if(!Gate::allows('post-comment-actions', $comment)) {
             return Redirect::back()->withErrors([
-                'comment' => __('User not allowed to delete this comment!')
+                'message' => __('this user not allowed perform this operation')
             ], 'comment_error');
         }
 

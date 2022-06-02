@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Http\Requests\Posts\StorePostRequest;
 use App\Http\Requests\Posts\UpdatePostRequest;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Redirect;
 
 class PostController extends Controller
@@ -39,9 +40,17 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $post = $request->validated();
-        $post['user_id'] = auth()->id();
-        Post::create($post);
+        $postData = $request->validated();
+        $postData['user_id'] = auth()->id();
+        $post = Post::create($postData);
+
+        if(is_array($postData['tags']) && count($postData['tags']) > 0) {
+            foreach ($postData['tags'] as $tagTitle) {
+                $post->tags()->attach(
+                    Tag::create(['title' => $tagTitle])
+                );
+            }
+        }
 
         return Redirect::back();
     }
@@ -81,10 +90,29 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $postValidData = $request->validated();
-        $postValidData['user_id'] = auth()->id();
-        $post->update($postValidData);
+        // check user allowed
+        if($post->user_id !== auth()->id()) {
+            return Redirect::back()->withErrors([
+                'message' => __('this user not allowed perform this operation')
+            ], 'post_error');
+        }
 
+        // Check data availability
+        $postData = $request->validated();
+        if(!$postData){
+            return Redirect::back()->withErrors(__('content not found'));
+        }
+
+        // check tags availability
+        if(is_array($postData['tags']) && count($postData['tags']) > 0) {
+            foreach ($postData['tags'] as $tagTitle) {
+                $post->tags()->sync(
+                    Tag::create(['title' => $tagTitle])
+                );
+            }
+        }
+
+        $post->update($postData);
         return Redirect::back();
     }
 
@@ -96,6 +124,16 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        // comment this following line, because use soft delete, so if you want to restore, all tags not restore
+        // $post->tags()->detach();
+
+        // check user allowed
+        if($post->user_id !== auth()->id()) {
+            return Redirect::back()->withErrors([
+                'message' => __('this user not allowed perform this operation')
+            ], 'post_error');
+        }
+
         $post->delete();
         return Redirect::back();
     }

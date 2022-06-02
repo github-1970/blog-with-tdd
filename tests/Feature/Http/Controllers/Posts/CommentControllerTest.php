@@ -62,6 +62,9 @@ class CommentControllerTest extends TestCase
 
         $response = $this->actingAs($user)->put(route('posts.comments.update', [$post, $comment]), $commentData);
 
+        $comment = Comment::find($comment->id);
+        $post = Post::find($post->id);
+
         $response->assertStatus(302)
         ->assertSessionDoesntHaveErrors()
         ->assertRedirect(route('home'));
@@ -91,14 +94,16 @@ class CommentControllerTest extends TestCase
         $response = $this->actingAs($anotherUser)->put(route('posts.comments.update', [$post, $comment]), $commentData);
 
         $response->assertStatus(302)
-        ->assertSessionHasErrors('comment', null, 'comment_error')
+        ->assertSessionHasErrors('message', null, 'comment_error')
         ->assertRedirect(route('home'));
 
-        $comment = $post->comments()->where([
-            ['body', $commentData['body']],
-            ['user_id', $anotherUser->id],
-        ])->first();
-        $this->assertNull($comment);
+        $this->assertDatabaseMissing('comments', $commentData);
+
+        // $comment = $post->comments()->where([
+        //     [$commentData],
+        //     ['user_id', $anotherUser->id],
+        // ])->first();
+        // $this->assertNull($comment);
     }
 
     public function test_post_comment_destroy()
@@ -135,8 +140,10 @@ class CommentControllerTest extends TestCase
         $response = $this->actingAs($another)->delete(route('posts.comments.destroy', [$post, $comment]));
 
         $response->assertStatus(302)
-        ->assertSessionHasErrors('comment', null, 'comment_error')
+        ->assertSessionHasErrors('message', null, 'comment_error')
         ->assertRedirect(route('home'));
+
+        $this->assertDatabaseHas('comments', $comment->toArray());
 
         $comment = Comment::onlyTrashed()->find($comment->id);
         $this->assertNull($comment);

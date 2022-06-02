@@ -132,9 +132,5 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-    ],
-
-    "my_custom" => [
-        "comment-not-found-in-post" => "در این پست این نظر یافت نشد!"
     ]
 ];

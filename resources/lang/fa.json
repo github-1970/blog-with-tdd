@@ -751,7 +751,6 @@
 
 
 
-    "Comment not found in this post!": "در این پست این نظر یافت نشد!",
-    "User not allowed to edit this comment!": "کاربر مجاز به ویرایش این نظر نیست!",
-    "User not allowed to delete this comment!": "کاربر مجاز به حذف این نظر نیست!"
+    "content not found": "محتوای موردنظر یافت نشد",
+    "this user not allowed perform this operation": "این کاربر مجاز به انجام این عملیات نمی‌باشد"
 }

@@ -39,14 +39,4 @@ Route::name('posts.')->prefix('posts')->group(function(){
 
         Route::delete('{post}/{comment}', [CommentController::class, 'destroy'])->name('destroy')->middleware('auth');
     });
-
-    // tags
-    // Route::name('tags.')->prefix('tags')->group(function(){
-    //     Route::post('{post}/store', [CommentController::class, 'store'])->name('store')->middleware('auth');
-
-    //     Route::get('{post}/{comment}/edit', [CommentController::class, 'edit'])->name('edit');
-    //     Route::put('{post}/{comment}', [CommentController::class, 'update'])->name('update')->middleware('auth');
-
-    //     Route::delete('{post}/{comment}', [CommentController::class, 'destroy'])->name('destroy')->middleware('auth');
-    // });
 });
