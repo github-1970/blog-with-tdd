@@ -13,19 +13,15 @@ use Tests\TestCase;
 
 class UserModelTest extends TestCase
 {
-    // select, insert, update, delete
-
-    static $once = false;
-
     public function setUp(): void
     {
         parent::setUp();
-        TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables']);
+        TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables', 'categories']);
     }
 
     public function tearDown(): void
     {
-        TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables']);
+        TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables', 'categories']);
         parent::tearDown();
     }
 

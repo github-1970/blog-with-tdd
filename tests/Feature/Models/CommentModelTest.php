@@ -12,22 +12,14 @@ use Tests\TestCase;
 
 class CommentModelTest extends TestCase
 {
-    // select, insert, update, delete
-
-    static $once = false;
-
     public function setUp(): void
     {
         parent::setUp();
-        // TestHelpers::truncateTable(['users', 'posts', 'comments']);
-        // for faster tests
         TestHelpers::truncateTable('comments');
     }
 
     public function tearDown(): void
     {
-        // TestHelpers::truncateTable(['users', 'posts', 'comments']);
-        // for faster tests
         TestHelpers::truncateTable('comments');
         parent::tearDown();
     }

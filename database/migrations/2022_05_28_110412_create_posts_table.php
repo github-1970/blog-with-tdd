@@ -15,11 +15,14 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained('users', 'id')->nullOnDelete()->nullOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users', 'id')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('category_id')->nullable()->constrained('categories', 'id')->nullOnDelete()->cascadeOnUpdate();
             $table->string('title');
             $table->string('description', 200);
             $table->text('body');
+            // comment this, because it very slow for get all data
             // $table->fullText('body');
+            $table->timestamp('published_at')->useCurrent();
             $table->softDeletes();
             $table->timestamps();
         });

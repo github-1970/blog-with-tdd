@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
@@ -23,13 +24,18 @@ class DatabaseSeeder extends Seeder
 
         User::truncate();
         User::factory(10)->create();
+
         Post::truncate();
         Post::factory(10)->create();
+
         Comment::truncate();
         Comment::factory(10)->create();
-        DB::table('post_tag')->truncate();
+
         Tag::truncate();
         Tag::factory(10)->create();
+
+        Category::truncate();
+        Category::factory(9)->create();
 
         Schema::enableForeignKeyConstraints();
     }

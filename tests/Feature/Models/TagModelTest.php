@@ -13,22 +13,14 @@ use Tests\TestCase;
 
 class TagModelTest extends TestCase
 {
-    // select, insert, update, delete
-
-    static $once = false;
-
     public function setUp(): void
     {
         parent::setUp();
-        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables]);
-        // for faster tests
         TestHelpers::truncateTable(['tags', 'taggables']);
     }
 
     public function tearDown(): void
     {
-        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables]);
-        // for faster tests
         TestHelpers::truncateTable(['tags', 'taggables']);
         parent::tearDown();
     }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Models;
 
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
@@ -13,22 +14,14 @@ use Tests\TestCase;
 
 class PostModelTest extends TestCase
 {
-    // select, insert, update, delete
-
-    static $once = false;
-
     public function setUp(): void
     {
         parent::setUp();
-        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables']);
-        // for faster tests
         TestHelpers::truncateTable(['posts', 'taggables']);
     }
 
     public function tearDown(): void
     {
-        // TestHelpers::truncateTable(['users', 'posts', 'comments', 'tags', 'taggables']);
-        // for faster tests
         TestHelpers::truncateTable(['posts', 'taggables']);
         parent::tearDown();
     }
@@ -101,6 +94,14 @@ class PostModelTest extends TestCase
         $user = $post->user;
         $this->assertInstanceOf(User::class, $user);
         $this->assertDatabaseHas('users', $user->toArray());
+    }
+
+    public function test_post_belongs_to_categories()
+    {
+        $post = Post::factory()->forCategory()->create();
+        $category = $post->category;
+        $this->assertInstanceOf(Category::class, $category);
+        $this->assertDatabaseHas('categories', $category->toArray());
     }
 
     public function test_post_has_many_comments()

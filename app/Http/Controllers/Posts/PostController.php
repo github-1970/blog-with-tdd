@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['tags', 'comments'])->get();
+        $posts = Post::with(['tags', 'comments', 'category'])->published()->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -63,11 +63,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post->with(['tags', 'comments'])->first();
+        $post->with(['tags', 'comments']);
         $comments = $post->comments;
         $tags = $post->tags;
+        $category = $post->category;
 
-        return view('posts.show', compact('post', 'comments', 'tags'));
+        return view('posts.show', compact('post', 'comments', 'tags', 'category'));
     }
 
     /**
@@ -134,6 +135,7 @@ class PostController extends Controller
             ], 'post_error');
         }
 
+        
         $post->delete();
         return Redirect::back();
     }
