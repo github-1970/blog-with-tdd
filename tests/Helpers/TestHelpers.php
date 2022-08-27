@@ -9,9 +9,7 @@ class TestHelpers
 {
     public static function truncateTable($table)
     {
-
         is_array($table) ? self::truncateManyTables($table) : self::truncateOneTable($table);
-
     }
 
     private static function truncateManyTables($tables)
