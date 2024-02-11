@@ -104,7 +104,7 @@ The following tests have been executed:
 
 1. **Clone the Repository:**
    ```
-   git clone <repository_url>
+   git clone https://github.com/github-1970/blog-with-tdd
    ```
 
 2. **Install Dependencies:**
